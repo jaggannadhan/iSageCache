@@ -7,21 +7,24 @@ class CacheLLMResponseService:
 
     CACHE_BUCKET = "isage-faq"
     
-    def get_top_queries(self, k=10):
+    @classmethod
+    def get_top_queries(cls, k=10):
         try:
+            print(f"get_top_queries service")
             query_list, msg = FAQ.get_all_queries(k)
             return query_list, msg
         except Exception:
             print(traceback.format_exc())
-            return None
+            return None, "Unable to connect to the DB"
         
-    def cache_query_response(self, data):
+    @classmethod
+    def cache_query_response(cls, data):
         try:
             query = data.get("query")
             answer = data.get("answer")
 
             blob_url, msg = FileUploadService.write_text_to_file(
-                self.CACHE_BUCKET, 
+                cls.CACHE_BUCKET, 
                 query, answer
             )
             print(msg)
