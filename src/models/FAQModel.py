@@ -22,12 +22,13 @@ class FAQ:
             return entity, f"Successully retrieved query: {question}"
         except Exception:
             print(traceback.format_exc())
-            return False, f"Unable to retrieve query: {question}!"
+            return None, f"Unable to retrieve query: {question}!"
         
     @classmethod
     def get_all_queries(cls, k=20):
         print(f"Retrieving all queries...")
         try:
+            k = int(k)
             query = FAQ_CLIENT.query(kind=cls.kind)
             query.order = ["-votes"]
             entity_list = list(query.fetch(limit=k))

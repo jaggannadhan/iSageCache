@@ -8,7 +8,7 @@ class CacheLLMResponseService:
     CACHE_BUCKET = "isage-faq"
     
     @classmethod
-    def get_top_queries(cls, k=10):
+    def get_top_queries(cls, k=20):
         try:
             print(f"get_top_queries service")
             query_list, msg = FAQ.get_all_queries(k)
@@ -31,9 +31,20 @@ class CacheLLMResponseService:
             if blob_url:
                 entity, msg = FAQ.add_query(query, blob_url)
                 print(msg)
-                return True, msg
+                return entity, msg
         
-            return False, msg
+            return None, msg
         except Exception:
             print(traceback.format_exc())
             return False, "Error occured in cache_query_response"
+        
+    
+    @classmethod
+    def increment_query_vote(cls, data):
+        try:
+            query = data.get("query")
+            FAQ.increment_vote_for_query(query)
+            return True, "Sucessfully incremented vote for query"
+        except Exception:
+            print(traceback.format_exc())
+            return False, "Error occured in increment_query_vote"

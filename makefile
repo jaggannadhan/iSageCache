@@ -19,15 +19,4 @@ deploy-queue:
 	gcloud app deploy queue.yaml
 
 
-########################################################### BUILD & DELPOY ##############################################################
-
-## USE WITH CAUTION - DEPLOYS EVEN IF BUILD FAILS
-build-deploy-default:
-	make build;
-	make deploy-default;
-
-build-deploy-local:
-	make build;
-	make deploy-local;
-
 
